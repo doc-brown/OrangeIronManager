@@ -52,7 +52,7 @@
         <div class="panel-heading">Lektionen</div>
         <div class="panel-body">
           <div ng-repeat="lesson in lessons" class="panel panel-primary">
-            <div class="panel-heading">{{lesson.name}}</div>
+            <div class="panel-heading">{{lesson.name}} Version: {{lesson.version}}</div>
             <div class="panel-body">Vokabelanzahl: {{lesson.vocabulary.length}}</div>
           </div>
         </div>
