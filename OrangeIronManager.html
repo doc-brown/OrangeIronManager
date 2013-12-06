@@ -1,0 +1,62 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/orangeiron.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+    <script type="text/javascript" src="js/orangeiron.js"></script>
+  </head>
+  <body>
+    <div ng-controller="OrangeIronCtrl">
+      <h1>Orange Iron - Vokabelmanager</h1>
+      <hr>
+      <form ng-submit="getData()">
+        <input type="text" ng-model="url" size="200" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
+        <input class="btn-primary" type="submit" value="Lade Daten">
+      </form>
+      <hr>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Servername
+            </div>
+            <div class="panel-body">
+              {{server.serverName}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Beschreibung
+            </div>
+            <div class="panel-body">
+              {{server.serverDescription}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              Datenversion
+            </div>
+            <div class="panel-body">
+              {{server.version}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-primary">
+        <div class="panel-heading">Lektionen</div>
+        <div class="panel-body">
+          <div ng-repeat="lesson in lessons" class="panel panel-primary">
+            <div class="panel-heading">{{lesson.name}}</div>
+            <div class="panel-body">Vokabelanzahl: {{lesson.vocabulary.length}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
