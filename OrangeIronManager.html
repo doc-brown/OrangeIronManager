@@ -34,11 +34,11 @@
         <div class="panel-heading">Lektionen</div>
         <div class="panel-body">
         	<ul class="list-group">
-			  <li ng-repeat="lesson in lessons" class="list-group-item">
-			    <span class="badge">{{lesson.version}}</span>
-			    {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
-			  </li>
-			</ul>
+			       <li ng-repeat="lesson in lessons" class="list-group-item">
+			         <span class="badge">{{lesson.version}}</span>
+			         {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
+			       </li>
+			     </ul>
           <!-- <div ng-repeat="lesson in lessons" class="panel panel-primary">
             <div class="panel-heading">{{lesson.name}} Version: {{lesson.version}}</div>
             <div class="panel-body">Vokabelanzahl: {{lesson.vocabulary.length}}</div>
@@ -55,6 +55,32 @@
           </div> -->
         </div>
       </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">Neue Lektion hinzufügen</div>
+        <div class="panel-body">
+          <form class="form-vertical">
+            <p><input type="text" ng-model="newLessonName" placeholder="Lektionsname"></p>
+            <hr>
+            <div ng-repeat="word in newWords">
+              {{word.originalWord}} -> {{word.correctTranslation}} (<span ng-repeat="translation in word.alternativeTranslations">{{translation}} </span>)
+            </div>
+            <hr>
+            <form>
+              <p><input type="text" ng-model="newOriginalWord" placeholder="originalWord"> <input type="text" ng-model="newCorrectTranslation" placeholder="correctTranslation"></p>
+              <form class="form-horizontal">
+                <p><span ng-repeat="alternativeTranslation in newAlternativeTranslations">{{alternativeTranslation}} </span> <input type="text" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation"> <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button></p>
+              </form>
+              <p><button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button></p>
+            </form>
+            <hr>
+            <button class="btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
+          </form>
+        </div>
+      </div>
+      <hr>
+      <h3>DEBUG</h3>
+      {{server}}
     </div>
   </body>
 </html>
