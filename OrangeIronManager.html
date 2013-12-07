@@ -16,45 +16,43 @@
         <input class="btn-primary" type="submit" value="Lade Daten">
       </form>
       <hr>
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              Servername
-            </div>
-            <div class="panel-body">
-              {{server.serverName}}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              Beschreibung
-            </div>
-            <div class="panel-body">
-              {{server.serverDescription}}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              Datenversion
-            </div>
-            <div class="panel-body">
-              {{server.version}}
-            </div>
-          </div>
+      <div class="panel panel-primary">
+      	<div class="panel-heading">
+        	Serverinfo
+		</div>
+        <div class="panel-body">
+        	<ul class="list-group">
+			  <li class="list-group-item">
+			    <span class="badge">{{server.version}}</span>
+	        	{{server.serverName}}
+			  </li>
+			  <li class="list-group-item">{{server.serverDescription}}</li>
+			</ul>
         </div>
       </div>
       <div class="panel panel-primary">
         <div class="panel-heading">Lektionen</div>
         <div class="panel-body">
-          <div ng-repeat="lesson in lessons" class="panel panel-primary">
+        	<ul class="list-group">
+			  <li ng-repeat="lesson in lessons" class="list-group-item">
+			    <span class="badge">{{lesson.version}}</span>
+			    {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
+			  </li>
+			</ul>
+          <!-- <div ng-repeat="lesson in lessons" class="panel panel-primary">
             <div class="panel-heading">{{lesson.name}} Version: {{lesson.version}}</div>
             <div class="panel-body">Vokabelanzahl: {{lesson.vocabulary.length}}</div>
-          </div>
+            <div ng-repeat="word in lesson.vocabulary">
+            	<div class="panel panel-primary">
+            		<div class="panel-heading">
+            			{{word.originalWord}} -> {{word.correctTranslation}}
+            		</div>
+            		<div class="panel-body">
+            			<span ng-repeat="translation in word.alternativeTranslations track by $index">{{translation}}, </span>
+            		</div> 
+            	</div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
