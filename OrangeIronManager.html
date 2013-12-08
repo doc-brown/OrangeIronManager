@@ -10,7 +10,7 @@
   </head>
   <body>
     <div ng-controller="OrangeIronCtrl">
-      <h1>Orange Iron - Vokabelmanager</h1>
+      <h1>Orange Iron Manager</h1>
       <hr>
       <form ng-submit="getData(url)">
         <input type="text" ng-model="url" size="200" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
@@ -52,7 +52,7 @@
         <div class="panel-heading">Lektion bearbeiten</div>
         <div class="panel-body">
         	<form>
-	        	<p>{{lessonToEdit.name}}</p>
+	        	<p><input type="text" ng-model="lessonToEdit.name"></p>
 	        	<ul class="list-group">
 	        		<li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
 	        			<input type="text" ng-model="word.originalWord"> <input type="text" ng-model="word.correctTranslation"> 
