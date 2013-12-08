@@ -9,6 +9,7 @@ function OrangeIronCtrl($scope, $http) {
 	$scope.newWords = [];
 
 	var currIndex = -1;
+	var isDebug = false;
 
 	$scope.getData = function(url) {
 		$http.get(url).success(function(data) {
@@ -66,6 +67,22 @@ function OrangeIronCtrl($scope, $http) {
 		}
 	};
 
+	$scope.toggleDebug = function() {
+		isDebug=!isDebug;
+	}
+
+	$scope.isDebugEnabled = function() {
+		return isDebug;
+	}
+
+	$scope.saveData = function() {
+		if (!showSave) {
+			alert("Your browser does not support any method of saving JavaScript generated data to files.");
+			return;
+		}
+		showSave(angular.toJson($scope.server), 'server.json', 'text/plain; charset=UTF-8');
+		};
+ 
 	uuid = function() {
 		return UUIDjs.create().toString();
 	};

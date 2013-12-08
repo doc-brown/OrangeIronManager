@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
     <script type="text/javascript" src="js/orangeiron.js"></script>
     <script type="text/javascript" src="js/uuid.js"></script>
+    <script type="text/javascript" src="js/save.js"></script>
   </head>
   <body>
     <div ng-controller="OrangeIronCtrl">
@@ -88,10 +89,14 @@
         </div>
       </div>
 
-      <hr>
+      <p><button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button></p>
+      <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
 
-      <h3>DEBUG</h3>
-      <pre>{{server | json}}</pre>
+      <div ng-show="isDebugEnabled()">
+	      <hr>
+	      <h3>DEBUG</h3>
+	      <pre>{{server | json}}</pre>
+      </div>
     </div>
   </body>
 </html>
