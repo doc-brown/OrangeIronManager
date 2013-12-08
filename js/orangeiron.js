@@ -1,20 +1,18 @@
 function OrangeIronCtrl($scope, $http) {
 
 	$scope.server = {};
-	$scope.lessons = [];
-	$scope.editLesson = {};
+	$scope.lessonToEdit = null;
 
 	$scope.newAlternativeTranslations = [];
 	$scope.newVocabulary = [];
 	$scope.newWord = {};
 	$scope.newWords = [];
 
-	currIndex = 0;
+	var currIndex = -1;
 
-	$scope.getData = function() {
-		$http.get('https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json').success(function(data) {
+	$scope.getData = function(url) {
+		$http.get(url).success(function(data) {
 	    $scope.server = data;
-	    $scope.lessons = data.lessons;
 	  });
 	};
 
@@ -44,15 +42,28 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newAlternativeTranslation = '';
 	};
 
-	$scope.editLesson = function(index) {
-		$scope.editLesson = $scope.lessons[index];
-		currIndex = index;
+	$scope.editLesson = function(idx) {
+		$scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
+		currIndex = idx;
 	};
 
 	$scope.saveEditedLesson = function(index) {
-		$scope.editLesson.version++;
-		$scope.server.lessons[currIndex] = $scope.editLesson;
+		$scope.lessonToEdit.version++;
+		$scope.server.lessons[currIndex] = $scope.lessonToEdit;
 		$scope.server.version++;
+		$scope.lessonToEdit = {};
+	};
+
+	$scope.cancelEditedLesson = function() {
+		$scope.lessonToEdit = null;
+	};
+
+	$scope.showEditSection = function() {
+		if ($scope.lessonToEdit) {
+			return true;
+		} else {
+			return false;
+		}
 	};
 
 	uuid = function() {

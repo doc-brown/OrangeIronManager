@@ -12,7 +12,7 @@
     <div ng-controller="OrangeIronCtrl">
       <h1>Orange Iron - Vokabelmanager</h1>
       <hr>
-      <form ng-submit="getData()">
+      <form ng-submit="getData(url)">
         <input type="text" ng-model="url" size="200" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
         <input class="btn-primary" type="submit" value="Lade Daten">
       </form>
@@ -40,26 +40,29 @@
         <div class="panel-heading">Lektionen</div>
         <div class="panel-body">
         	<ul class="list-group">
-		       <li ng-repeat="lesson in server.lessons" class="list-group-item">
+		       <li ng-repeat="lesson in server.lessons track by $index" class="list-group-item">
 		         <span class="badge">{{lesson.version}}</span>
-		         <button class="btn btn-danger" ng-click="editLesson($index)"><i class="glyphicon glyphicon-edit"></i></button> {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
+		         <button class="btn btn-success" ng-click="editLesson($index)"><i class="glyphicon glyphicon-pencil"></i></button> {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
 		       </li>
 		     </ul>
         </div>
       </div>
 
-      <div class="panel panel-primary">
+      <div class="panel panel-primary" ng-show="showEditSection()">
         <div class="panel-heading">Lektion bearbeiten</div>
         <div class="panel-body">
-        	<p>{{editLesson.name}}</p>
-        	<ul>
-        		<li ng-repeat="word in editLesson.vocabulary">
-        			<input type="text" ng-model="word.originalWord"> <input type="text" ng-model="word.correctTranslation"> 
-        			<input ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
-        		</li>
-        	</ul>
-        </div>
-        <button class="btn btn-danger" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-save"></i> Speichern</button>
+        	<form>
+	        	<p>{{lessonToEdit.name}}</p>
+	        	<ul class="list-group">
+	        		<li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
+	        			<input type="text" ng-model="word.originalWord"> <input type="text" ng-model="word.correctTranslation"> 
+	        			<input ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
+	        		</li>
+	        	</ul>
+	        	<button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+	        	<button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
+	        </form>
+	      </div>
       </div>
 
       <div class="panel panel-primary">
