@@ -39,7 +39,7 @@
       </div>
 
       <div class="panel panel-primary">
-        <div class="panel-heading">Lektionen <input type="text" ng-model="q.name" placeholder="lessonname"> <input type="text" ng-model="q.vocabulary" placeholder="vocabulary"></div>
+        <div class="panel-heading">Lektionen <label><i class="glyphicon glyphicon-filter"></i><input type="text" ng-model="q.name" placeholder="lessonname"></label> <input type="text" ng-model="q.vocabulary" placeholder="vocabulary"></div>
         <div class="panel-body">
         	<ul class="list-group">
 		       <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item">
