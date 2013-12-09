@@ -44,7 +44,7 @@
         	<ul class="list-group">
 		       <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item">
 		         <span class="badge">{{lesson.version}}</span>
-		         <button class="btn btn-success" ng-click="editLesson($index)"><i class="glyphicon glyphicon-pencil"></i></button> {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
+		         <button class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i></button> {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
 		       </li>
 		     </ul>
         </div>

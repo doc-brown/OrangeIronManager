@@ -43,8 +43,8 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newAlternativeTranslation = '';
 	};
 
-	$scope.editLesson = function(idx) {
-		$scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
+	$scope.editLesson = function(lesson) {
+		$scope.lessonToEdit = angular.copy($scope.server.lessons[$scope.server.lessons.indexOf(lesson)]);
 		currIndex = idx;
 	};
 
