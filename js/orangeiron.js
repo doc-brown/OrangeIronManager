@@ -21,10 +21,7 @@ function OrangeIronCtrl($scope, $http) {
 
 	$scope.createServer = function() {
 		$scope.server = {uuid:uuid(), serverName:$scope.serverName, serverDescription:$scope.serverDescription, version:1, lessons:[]};
-		$scope.newAlternativeTranslations =[];
-		$scope.newVocabulary = [];
-		$scope.newWord = {};
-		$scope.newWords = [];
+		resetFields();
 	};
 
 	$scope.addLesson = function() {
@@ -43,22 +40,20 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newWord = {uuid:uuid(), originalWord:$scope.newOriginalWord, correctTranslation:$scope.newCorrectTranslation, alternativeTranslations:$scope.newAlternativeTranslations};
 		$scope.newVocabulary.push($scope.newWord);
 		$scope.newWords.push($scope.newWord);
-		$scope.newOriginalWord = '';
-		$scope.newCorrectTranslation = '';
-		$scope.newAlternativeTranslations = [];
-		$scope.newAlternativeTranslation = '';
+		resetFields();
 	};
 
 	$scope.editLesson = function(lesson) {
-		$scope.lessonToEdit = angular.copy($scope.server.lessons[$scope.server.lessons.indexOf(lesson)]);
+		var idx = $scope.server.lessons.indexOf(lesson);
+		$scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
 		currIndex = idx;
 	};
 
-	$scope.saveEditedLesson = function(index) {
+	$scope.saveEditedLesson = function() {
 		$scope.lessonToEdit.version++;
 		$scope.server.lessons[currIndex] = $scope.lessonToEdit;
 		$scope.server.version++;
-		$scope.lessonToEdit = {};
+		$scope.lessonToEdit = null;
 	};
 
 	$scope.cancelEditedLesson = function() {
@@ -92,4 +87,14 @@ function OrangeIronCtrl($scope, $http) {
 	uuid = function() {
 		return UUIDjs.create().toString();
 	};
+
+	resetFields = function() {
+		$scope.newAlternativeTranslations =[];
+		$scope.newVocabulary = [];
+		$scope.newWord = {};
+		$scope.newWords = [];
+	}
+
+	// Development-Constants. REMOVE FOR PRODUCTION
+	$scope.url="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/uuid.json"
 }
