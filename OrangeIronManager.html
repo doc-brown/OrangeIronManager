@@ -1,103 +1,160 @@
 <!doctype html>
-<html ng-app>
-  <head>
+<html ng-app="orangeIronManager">
+
+<head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/orangeiron.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-animate.js"></script>
+    <!-- ngAnimation -->
+    <!--<script src="js/angular.min.js"></script>-->
+    <!--<script src="js/angular-animate.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="css/ng-animation.css">
+    <!-- /ngAnimation -->
     <script type="text/javascript" src="js/orangeiron.js"></script>
     <script type="text/javascript" src="js/uuid.js"></script>
     <script type="text/javascript" src="js/save.js"></script>
-  </head>
-  <body>
-    <div ng-controller="OrangeIronCtrl">
-      <h1>Orange Iron Manager</h1>
-      <hr>
-      <form ng-submit="getData(url)">
-        <input type="text" ng-model="url" size="200" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
-        <input class="btn-primary" type="submit" value="Lade Daten">
-      </form>
-      <hr>
-      <p><input type="text" ng-model="serverName" size="100" placeholder="Servername"></p>
-      <p><input type="text" ng-model="serverDescription" size="100" placeholder="Beschreibung"></p>
-      <p><button class="btn btn-primary" ng-click="createServer()">Neuen Server erstellen</button></p>
-      <hr>
-      <div class="panel panel-primary">
-      	<div class="panel-heading">
-        	Serverinfo
-		</div>
-        <div class="panel-body">
-        	<ul class="list-group">
-			  <li class="list-group-item">
-			    <span class="badge">{{server.version}}</span>
-	        	{{server.serverName}}
-			  </li>
-			  <li class="list-group-item">{{server.serverDescription}}</li>
-			</ul>
-        </div>
-      </div>
+</head>
 
-      <div class="panel panel-primary">
-        <div class="panel-heading">Lektionen <label><i class="glyphicon glyphicon-filter"></i><input type="text" ng-model="q.name" placeholder="lessonname"></label> <input type="text" ng-model="q.vocabulary" placeholder="vocabulary"></div>
-        <div class="panel-body">
-        	<ul class="list-group">
-		       <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item">
-		         <span class="badge">{{lesson.version}}</span>
-		         <button class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i></button> {{lesson.name}} <span class="label label-info">{{lesson.vocabulary.length}}</span>
-		       </li>
-		     </ul>
-        </div>
-      </div>
-
-      <div class="panel panel-primary" ng-show="showEditSection()">
-        <div class="panel-heading">Lektion bearbeiten</div>
-        <div class="panel-body">
-        	<form>
-	        	<p><input type="text" ng-model="lessonToEdit.name"></p>
-	        	<ul class="list-group">
-	        		<li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
-	        			<input type="text" ng-model="word.originalWord"> <input type="text" ng-model="word.correctTranslation"> 
-	        			<input ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
-	        		</li>
-	        	</ul>
-	        	<button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
-	        	<button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
-	        </form>
-	      </div>
-      </div>
-
-      <div class="panel panel-primary">
-        <div class="panel-heading">Neue Lektion hinzufügen</div>
-        <div class="panel-body">
-          <form class="form-vertical">
-            <p><input type="text" ng-model="newLessonName" placeholder="Lektionsname"></p>
-            <hr>
-            <div ng-repeat="word in newWords track by $index">
-              {{word.originalWord}} -> {{word.correctTranslation}} (<span ng-repeat="translation in word.alternativeTranslations track by $index">{{translation}} </span>)
+<body>
+    <div class="container" ng-controller="OrangeIronCtrl">
+        <h1>Orange Iron Manager</h1>
+        <hr>
+        <form role="form" ng-submit="getData(url)">
+            <h4>Daten laden</h4>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="url" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Lade Daten">
+                </span>
             </div>
-            <hr>
-            <form>
-              <p><input type="text" ng-model="newOriginalWord" placeholder="originalWord"> <input type="text" ng-model="newCorrectTranslation" placeholder="correctTranslation"></p>
-              <form class="form-horizontal">
-                <p><span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}} </span> <input type="text" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation"> <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button></p>
-              </form>
-              <p><button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button></p>
-            </form>
-            <hr>
-            <button class="btn btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
-          </form>
+        </form>
+        <hr class="clearfix">
+        <form role="form">
+            <h4>Neuen Server erstellen</h4>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="serverName" size="100" placeholder="Servername">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="serverDescription" size="100" placeholder="Beschreibung">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="createServer()">Neuen Server erstellen</button>
+            </div>
+        </form>
+        <hr>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Serverinfo
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge">{{server.version}}</span>
+                        {{server.serverName}}
+                    </li>
+                    <li class="list-group-item">{{server.serverDescription}}</li>
+                </ul>
+            </div>
         </div>
-      </div>
 
-      <p><button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button></p>
-      <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <form class="form-inline" role="form">
+                    <div class="form-group">Lektionen</div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="q.name" placeholder="lessonname">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="q.vocabulary" placeholder="vocabulary">
+                    </div>
+                </form>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item toggle">
+                        <span class="badge">{{lesson.version}}</span>
+                        <button class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i>
+                        </button>{{lesson.name}}
+                        <span class="label label-info">{{lesson.vocabulary.length}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-      <div ng-show="isDebugEnabled()">
-	      <hr>
-	      <h3>DEBUG</h3>
-	      <pre>{{server | json}}</pre>
-      </div>
+        <div class="panel panel-primary" ng-show="showEditSection()">
+            <div class="panel-heading">Lektion bearbeiten</div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="lessonToEdit.name">
+                    </div>
+                    <ul class="list-group">
+                        <li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
+                            <input type="text" ng-model="word.originalWord">
+                            <input type="text" ng-model="word.correctTranslation">
+                            <input ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
+                        </li>
+                    </ul>
+                    <button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+                    <button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Neue Lektion hinzufügen</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="newLessonName" placeholder="Lektionsname">
+                </div>
+                <hr>
+                <div ng-repeat="word in newWords track by $index">
+                    {{word.originalWord}} -> {{word.correctTranslation}} (
+                    <span ng-repeat="translation in word.alternativeTranslations track by $index">{{translation}}</span>)
+                </div>
+                <hr>
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="newOriginalWord" placeholder="originalWord">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="newCorrectTranslation" placeholder="correctTranslation">
+                </div>
+                <div class="form-group">
+                    <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}}</span>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
+                </div>
+                <div class="form-group">
+                    <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button class="btn btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
+
+
+        <form class="form-inline pull-right" role="form">
+        <div class="form-group">
+                <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+            </div>
+        </form>
+        <p></p>
+        <div ng-show="isDebugEnabled()">
+            <hr>
+            <h3>DEBUG</h3>
+            <pre>{{server | json}}</pre>
+        </div>
     </div>
-  </body>
+</body>
+
 </html>

@@ -1,3 +1,5 @@
+var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate']);
+
 function OrangeIronCtrl($scope, $http) {
 
 	$scope.server = {};
@@ -19,6 +21,10 @@ function OrangeIronCtrl($scope, $http) {
 
 	$scope.createServer = function() {
 		$scope.server = {uuid:uuid(), serverName:$scope.serverName, serverDescription:$scope.serverDescription, version:1, lessons:[]};
+		$scope.newAlternativeTranslations =[];
+		$scope.newVocabulary = [];
+		$scope.newWord = {};
+		$scope.newWords = [];
 	};
 
 	$scope.addLesson = function() {
