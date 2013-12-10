@@ -3,14 +3,13 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/orangeiron.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-animate.js"></script>
     <!-- ngAnimation -->
-    <!--<script src="js/angular.min.js"></script>-->
-    <!--<script src="js/angular-animate.min.js"></script>-->
     <link rel="stylesheet" type="text/css" href="css/ng-animation.css">
     <!-- /ngAnimation -->
     <script type="text/javascript" src="js/orangeiron.js"></script>
@@ -18,14 +17,94 @@
     <script type="text/javascript" src="js/save.js"></script>
 </head>
 
-<body>
-    <div class="container" ng-controller="OrangeIronCtrl">
-        <h1>Orange Iron Manager</h1>
-        <hr>
+<body ng-controller="OrangeIronCtrl">
+    <div class="navbar navbar-inverse navbar-fixed">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">Orange Iron Manager</a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Themes <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="themes">
+                            <li><a tabindex="-1" href="../default/">Default</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a tabindex="-1" href="../amelia/">Amelia</a>
+                            </li>
+                            <li><a tabindex="-1" href="../cerulean/">Cerulean</a>
+                            </li>
+                            <li><a tabindex="-1" href="../cosmo/">Cosmo</a>
+                            </li>
+                            <li><a tabindex="-1" href="../cyborg/">Cyborg</a>
+                            </li>
+                            <li><a tabindex="-1" href="../flatly/">Flatly</a>
+                            </li>
+                            <li><a tabindex="-1" href="../journal/">Journal</a>
+                            </li>
+                            <li><a tabindex="-1" href="../readable/">Readable</a>
+                            </li>
+                            <li><a tabindex="-1" href="../simplex/">Simplex</a>
+                            </li>
+                            <li><a tabindex="-1" href="../slate/">Slate</a>
+                            </li>
+                            <li><a tabindex="-1" href="../spacelab/">Spacelab</a>
+                            </li>
+                            <li><a tabindex="-1" href="../united/">United</a>
+                            </li>
+                            <li><a tabindex="-1" href="../yeti/">Yeti</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="../help/">Help</a>
+                    </li>
+                    <li>
+                        <a href="http://news.bootswatch.com">Blog</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">Download <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li><a tabindex="-1" href="./bootstrap.min.css">bootstrap.min.css</a>
+                            </li>
+                            <li><a tabindex="-1" href="./bootstrap.css">bootstrap.css</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a tabindex="-1" href="./variables.less">variables.less</a>
+                            </li>
+                            <li><a tabindex="-1" href="./bootswatch.less">bootswatch.less</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a>
+                    </li>
+                    <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a>
+                    </li>
+                </ul>
+
+            </div> -->
+        </div>
+    </div>
+    <div class="container">
+        <!-- <div class="page-header">
+            <div class="row">
+                <h1>Orange Iron Manager</h1>
+                <p class="lead">The fast edit tool for the Orange Iron Android app</p>
+            </div>
+        </div> -->
         <form role="form" ng-submit="getData(url)">
             <h4>Daten laden</h4>
             <div class="input-group">
-                <input type="text" class="form-control" ng-model="url" placeholder="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json">
+                <input type="text" class="form-control" ng-model="url" placeholder="URL des Server-JSON (z.B. https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/albert2.json)">
                 <span class="input-group-btn">
                     <input class="btn btn-primary" type="submit" value="Lade Daten">
                 </span>
@@ -65,10 +144,10 @@
                 <form class="form-inline" role="form">
                     <div class="form-group">Lektionen</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="q.name" placeholder="lessonname">
+                        <input type="text" class="form-control" ng-model="q.name" placeholder="Filtern nach Lektionsname">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="q.vocabulary" placeholder="vocabulary">
+                        <input type="text" class="form-control" ng-model="q.vocabulary" placeholder="Filtern nach Vokabel">
                     </div>
                 </form>
             </div>
@@ -76,9 +155,16 @@
                 <ul class="list-group">
                     <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item toggle">
                         <span class="badge">{{lesson.version}}</span>
-                        <button class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i>
-                        </button>{{lesson.name}}
-                        <span class="label label-info">{{lesson.vocabulary.length}}</span>
+                        <ul class="list-inline">
+                            <li>
+                                <button title="Lektion bearbeiten" class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i>
+                                </button>
+                            </li>
+                            <li>{{lesson.name}}</li>
+                            <li>
+                                <span title="Anzahl der Vokabeln in der Lektion" class="label label-info">{{lesson.vocabulary.length}}</span>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -141,7 +227,7 @@
 
 
         <form class="form-inline pull-right" role="form">
-        <div class="form-group">
+            <div class="form-group">
                 <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
             </div>
             <div class="form-group">
