@@ -15,6 +15,15 @@ function OrangeIronCtrl($scope, $http) {
 
 	$scope.getData = function(url) {
 		$http.get(url).success(function(data) {
+			if (data.uuid == null) {
+				// old format without uuids -> convert to new format
+				for (i = 0; i < data.lessons.length; ++i) {
+					data.lessons[i].uuid = uuid();
+					for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
+						data.lessons[i].vocabulary[j].uuid = uuid();
+					}
+				}
+			}
 	    $scope.server = data;
 	  });
 	};
