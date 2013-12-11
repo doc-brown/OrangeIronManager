@@ -2,6 +2,8 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate']);
 
 function OrangeIronCtrl($scope, $http) {
 
+	$scope.languages = [{name:'Englisch', locale:'en'}, {name:'Französisch', locale:'fr'}, {name:'Spanisch', locale:'es'}];
+
 	$scope.server = {};
 	$scope.lessonToEdit = null;
 
@@ -34,7 +36,7 @@ function OrangeIronCtrl($scope, $http) {
 	};
 
 	$scope.addLesson = function() {
-		$scope.server.lessons.push({uuid:uuid(), name:$scope.newLessonName, version:1, vocabulary:$scope.newVocabulary});
+		$scope.server.lessons.push({uuid:uuid(), name:$scope.newLessonName, language:$scope.language.locale, version:1, vocabulary:$scope.newVocabulary});
 		$scope.server.version++;
 		$scope.newLessonName = '';
 		$scope.newWords =  [];
@@ -103,6 +105,9 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newWord = {};
 		$scope.newWords = [];
 	}
+
+	// Defaults
+	$scope.language = {name:'Englisch', locale:'en'};
 
 	// Development-Constants. REMOVE FOR PRODUCTION
 	$scope.url="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/uuid.json"
