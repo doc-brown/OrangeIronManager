@@ -39,7 +39,9 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.server.lessons.push({uuid:uuid(), name:$scope.newLessonName, language:$scope.language.locale, version:1, vocabulary:$scope.newVocabulary});
 		$scope.server.version++;
 		$scope.newLessonName = '';
-		$scope.newWords =  [];
+		$scope.newOriginalWord = '';
+		$scope.newCorrectTranslation = '';
+		resetFields();
 	};
 
 	$scope.addTranslation = function() {
@@ -51,7 +53,8 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newWord = {uuid:uuid(), originalWord:$scope.newOriginalWord, correctTranslation:$scope.newCorrectTranslation, alternativeTranslations:$scope.newAlternativeTranslations};
 		$scope.newVocabulary.push($scope.newWord);
 		$scope.newWords.push($scope.newWord);
-		resetFields();
+		$scope.newAlternativeTranslations =[];
+		$scope.newWord = {};
 	};
 
 	$scope.editLesson = function(lesson) {
