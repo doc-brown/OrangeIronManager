@@ -18,7 +18,7 @@
 </head>
 
 <body ng-controller="OrangeIronCtrl">
-    <div class="navbar navbar-default navbar-fixed">
+    <div class="navbar navbar-inverse navbar-fixed">
         <div class="container">
             <div class="navbar-header">
                 <a href="#" class="navbar-brand">Orange Iron Manager</a>
@@ -94,8 +94,6 @@
             </div> -->
         </div>
     </div>
-
-
     <div class="container">
         <!-- <div class="page-header">
             <div class="row">
@@ -192,16 +190,16 @@
                                     <div class="form-group">
                                         <input class="form-control" ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
                                     </div>
-                                </div>
                             </div>
                         </li>
                     </ul>
                     <button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
                     <button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
                 </form>
+                </div>
             </div>
-        </div>
 
+<<<<<<< Updated upstream
         <div class="panel panel-primary">
             <div class="panel-heading">Neue Lektion hinzufügen</div>
             <div class="panel-body">
@@ -230,36 +228,59 @@
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
-                </div>
-                <div class="form-group">
-                    <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary form-element" ng-click="addLesson()">Lektion hinzufügen</button>
+=======
+            <div class="panel panel-primary">
+                <div class="panel-heading">Neue Lektion hinzufügen</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="newLessonName" placeholder="Lektionsname">
+                    </div>
+                    <hr>
+                    <div ng-repeat="word in newWords track by $index">
+                        {{word.originalWord}} -> {{word.correctTranslation}} (
+                        <span ng-repeat="translation in word.alternativeTranslations track by $index">{{translation}}</span>)
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="newOriginalWord" placeholder="originalWord">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="newCorrectTranslation" placeholder="correctTranslation">
+                    </div>
+                    <div class="form-group">
+                        <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}}</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button>
+                    </div>
+>>>>>>> Stashed changes
                 </div>
             </div>
-        </div>
-        <hr>
-
-
-        <form class="form-inline pull-right" role="form">
-            <div class="form-group">
-                <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
-            </div>
-        </form>
-        <p class="clearfix"></p>
-        <div ng-show="isDebugEnabled()">
             <hr>
-            <h3>DEBUG</h3>
-            <textarea class="form-control" rows="100">{{server | json}}</textarea>
+            <button class="btn btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
+
+
+            <form class="form-inline pull-right" role="form">
+                <div class="form-group">
+                    <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+                </div>
+            </form>
+            <p></p>
+            <div ng-show="isDebugEnabled()">
+                <hr>
+                <h3>DEBUG</h3>
+                <pre>{{server | json}}</pre>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>
