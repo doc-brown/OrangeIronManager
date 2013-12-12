@@ -227,20 +227,22 @@
                 <div class="form-group">
                     <input type="text" class="form-control" ng-model="newCorrectTranslation" placeholder="correctTranslation">
                 </div>
-                <div class="form-group">
-                    <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}}&nbsp;</span>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
-                </div>
-                <div class="form-group">
-                    <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
-                </div>
+                <form role="form">
+                    <div class="form-group">
+                        <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}}&nbsp;</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
+                    </div>
+                </form>
                 <div class="form-group">
                     <button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary form-element" ng-click="addLesson()">Lektion hinzufügen</button>
+                    <button class="btn btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -272,7 +274,7 @@
                     <h4 class="modal-title" id="myModalLabel">OrangeIronManager v0.1 &copy;2013 Robert Mathes</h4>
                 </div>
                 <div class="modal-body">
-                <p>OrangeIronManager ist die Verwaltungskomponente für die Android-App <a href="https://github.com/doc-brown/OrangeIron">OrangeIron</a>. Hiermit lassen sich Vokabelserver anlegen und bearbeiten.</p>
+                    <p>OrangeIronManager ist die Verwaltungskomponente für die Android-App <a href="https://github.com/doc-brown/OrangeIron">OrangeIron</a>. Hiermit lassen sich Vokabelserver anlegen und bearbeiten.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
