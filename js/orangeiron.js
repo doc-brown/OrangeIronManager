@@ -55,6 +55,8 @@ function OrangeIronCtrl($scope, $http) {
 		$scope.newWords.push($scope.newWord);
 		$scope.newAlternativeTranslations =[];
 		$scope.newWord = {};
+		$scope.newOriginalWord = '';
+		$scope.newCorrectTranslation = '';
 	};
 
 	$scope.editLesson = function(lesson) {
