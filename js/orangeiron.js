@@ -115,5 +115,5 @@ function OrangeIronCtrl($scope, $http) {
 	$scope.language = {name:'Englisch', locale:'en'};
 
 	// Development-Constants. REMOVE FOR PRODUCTION
-	$scope.url="https://googledrive.com/host/0B5pL2OLIkCeiN00xdnVyRGszTmM/uuid.json"
+	$scope.url="https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json"
 }
