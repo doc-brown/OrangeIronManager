@@ -20,9 +20,15 @@ function OrangeIronCtrl($scope, $http) {
 			if (data.uuid == null) {
 				// old format without uuids -> convert to new format
 				for (i = 0; i < data.lessons.length; ++i) {
-					data.lessons[i].uuid = uuid();
+                    if (data.lessons[i].uuid == null)
+                    {  
+					    data.lessons[i].uuid = uuid();
+                    }
 					for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
-						data.lessons[i].vocabulary[j].uuid = uuid();
+                        if (data.lessons[i].vocabulary[j].uuid == null)
+                        {
+						    data.lessons[i].vocabulary[j].uuid = uuid();
+                        }
 					}
 				}
 			}
