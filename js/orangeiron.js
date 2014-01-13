@@ -2,124 +2,152 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate']);
 
 function OrangeIronCtrl($scope, $http) {
 
-	$scope.languages = [{name:'Englisch', locale:'en'}, {name:'Französisch', locale:'fr'}, {name:'Spanisch', locale:'es'}];
+    $scope.languages = [{
+        name: 'Englisch',
+        locale: 'en'
+    }, {
+        name: 'Französisch',
+        locale: 'fr'
+    }, {
+        name: 'Spanisch',
+        locale: 'es'
+    }];
 
-	$scope.server = {};
-	$scope.lessonToEdit = null;
+    $scope.server = {};
+    $scope.lessonToEdit = null;
 
-	$scope.newAlternativeTranslations = [];
-	$scope.newVocabulary = [];
-	$scope.newWord = {};
-	$scope.newWords = [];
+    $scope.newAlternativeTranslations = [];
+    $scope.newVocabulary = [];
+    $scope.newWord = {};
+    $scope.newWords = [];
 
-	var currIndex = -1;
-	var isDebug = false;
+    var currIndex = -1;
+    var isDebug = false;
 
-	$scope.getData = function(url) {
-		$http.get(url).success(function(data) {
-			if (data.uuid == null) {
-				// old format without uuids -> convert to new format
-				for (i = 0; i < data.lessons.length; ++i) {
-                    if (data.lessons[i].uuid == null)
-                    {  
-					    data.lessons[i].uuid = uuid();
+    $scope.getData = function(url) {
+        $http.get(url).success(function(data) {
+            if (data.uuid == null) {
+                // old format without uuids -> convert to new format
+                data.uuid = uuid();
+                for (i = 0; i < data.lessons.length; ++i) {
+                    if (data.lessons[i].uuid == null) {
+                        data.lessons[i].uuid = uuid();
                     }
-					for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
-                        if (data.lessons[i].vocabulary[j].uuid == null)
-                        {
-						    data.lessons[i].vocabulary[j].uuid = uuid();
+                    for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
+                        if (data.lessons[i].vocabulary[j].uuid == null) {
+                            data.lessons[i].vocabulary[j].uuid = uuid();
                         }
-					}
-				}
-			}
-	    $scope.server = data;
-	  });
-	};
+                    }
+                }
+            }
+            $scope.server = data;
+        });
+    };
 
-	$scope.createServer = function() {
-		$scope.server = {uuid:uuid(), serverName:$scope.serverName, serverDescription:$scope.serverDescription, version:1, lessons:[]};
-		resetFields();
-	};
+    $scope.createServer = function() {
+        $scope.server = {
+            uuid: uuid(),
+            serverName: $scope.serverName,
+            serverDescription: $scope.serverDescription,
+            version: 1,
+            lessons: []
+        };
+        resetFields();
+    };
 
-	$scope.addLesson = function() {
-		$scope.server.lessons.push({uuid:uuid(), name:$scope.newLessonName, language:$scope.language.locale, version:1, vocabulary:$scope.newVocabulary});
-		$scope.server.version++;
-		$scope.newLessonName = '';
-		$scope.newOriginalWord = '';
-		$scope.newCorrectTranslation = '';
-		resetFields();
-	};
+    $scope.addLesson = function() {
+        $scope.server.lessons.push({
+            uuid: uuid(),
+            name: $scope.newLessonName,
+            language: $scope.language.locale,
+            version: 1,
+            vocabulary: $scope.newVocabulary
+        });
+        $scope.server.version++;
+        $scope.newLessonName = '';
+        $scope.newOriginalWord = '';
+        $scope.newCorrectTranslation = '';
+        resetFields();
+    };
 
-	$scope.addTranslation = function() {
-		$scope.newAlternativeTranslations.push($scope.newAlternativeTranslation);
-		$scope.newAlternativeTranslation = '';
-	};
+    $scope.addTranslation = function() {
+        $scope.newAlternativeTranslations.push($scope.newAlternativeTranslation);
+        $scope.newAlternativeTranslation = '';
+    };
 
-	$scope.addWord = function() {
-		$scope.newWord = {uuid:uuid(), originalWord:$scope.newOriginalWord, correctTranslation:$scope.newCorrectTranslation, alternativeTranslations:$scope.newAlternativeTranslations};
-		$scope.newVocabulary.push($scope.newWord);
-		$scope.newWords.push($scope.newWord);
-		$scope.newAlternativeTranslations =[];
-		$scope.newWord = {};
-		$scope.newOriginalWord = '';
-		$scope.newCorrectTranslation = '';
-	};
+    $scope.addWord = function() {
+        $scope.newWord = {
+            uuid: uuid(),
+            originalWord: $scope.newOriginalWord,
+            correctTranslation: $scope.newCorrectTranslation,
+            alternativeTranslations: $scope.newAlternativeTranslations
+        };
+        $scope.newVocabulary.push($scope.newWord);
+        $scope.newWords.push($scope.newWord);
+        $scope.newAlternativeTranslations = [];
+        $scope.newWord = {};
+        $scope.newOriginalWord = '';
+        $scope.newCorrectTranslation = '';
+    };
 
-	$scope.editLesson = function(lesson) {
-		var idx = $scope.server.lessons.indexOf(lesson);
-		$scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
-		currIndex = idx;
-	};
+    $scope.editLesson = function(lesson) {
+        var idx = $scope.server.lessons.indexOf(lesson);
+        $scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
+        currIndex = idx;
+    };
 
-	$scope.saveEditedLesson = function() {
-		$scope.lessonToEdit.version++;
-		$scope.server.lessons[currIndex] = $scope.lessonToEdit;
-		$scope.server.version++;
-		$scope.lessonToEdit = null;
-	};
+    $scope.saveEditedLesson = function() {
+        $scope.lessonToEdit.version++;
+        $scope.server.lessons[currIndex] = $scope.lessonToEdit;
+        $scope.server.version++;
+        $scope.lessonToEdit = null;
+    };
 
-	$scope.cancelEditedLesson = function() {
-		$scope.lessonToEdit = null;
-	};
+    $scope.cancelEditedLesson = function() {
+        $scope.lessonToEdit = null;
+    };
 
-	$scope.showEditSection = function() {
-		if ($scope.lessonToEdit) {
-			return true;
-		} else {
-			return false;
-		}
-	};
+    $scope.showEditSection = function() {
+        if ($scope.lessonToEdit) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
-	$scope.toggleDebug = function() {
-		isDebug=!isDebug;
-	}
+    $scope.toggleDebug = function() {
+        isDebug = !isDebug;
+    }
 
-	$scope.isDebugEnabled = function() {
-		return isDebug;
-	}
+    $scope.isDebugEnabled = function() {
+        return isDebug;
+    }
 
-	$scope.saveData = function() {
-		if (!showSave) {
-			alert("Your browser does not support any method of saving JavaScript generated data to files.");
-			return;
-		}
-		showSave(angular.toJson($scope.server), 'server.json', 'text/plain; charset=UTF-8');
-		};
- 
-	uuid = function() {
-		return UUIDjs.create().toString();
-	};
+    $scope.saveData = function() {
+        if (!showSave) {
+            alert("Your browser does not support any method of saving JavaScript generated data to files.");
+            return;
+        }
+        showSave(angular.toJson($scope.server), 'server.json', 'text/plain; charset=UTF-8');
+    };
 
-	resetFields = function() {
-		$scope.newAlternativeTranslations =[];
-		$scope.newVocabulary = [];
-		$scope.newWord = {};
-		$scope.newWords = [];
-	}
+    uuid = function() {
+        return UUIDjs.create().toString();
+    };
 
-	// Defaults
-	$scope.language = {name:'Englisch', locale:'en'};
+    resetFields = function() {
+        $scope.newAlternativeTranslations = [];
+        $scope.newVocabulary = [];
+        $scope.newWord = {};
+        $scope.newWords = [];
+    }
 
-	// Development-Constants. REMOVE FOR PRODUCTION
-	$scope.url="https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json"
+    // Defaults
+    $scope.language = {
+        name: 'Englisch',
+        locale: 'en'
+    };
+
+    // Development-Constants. REMOVE FOR PRODUCTION
+    $scope.url = "https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json"
 }
