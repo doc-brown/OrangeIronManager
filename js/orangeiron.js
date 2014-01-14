@@ -29,6 +29,7 @@ function OrangeIronCtrl($scope, $http) {
             if (data.uuid == null) {
                 // old format without uuids -> convert to new format
                 data.uuid = uuid();
+}
                 for (i = 0; i < data.lessons.length; ++i) {
                     if (data.lessons[i].uuid == null) {
                         data.lessons[i].uuid = uuid();
@@ -38,7 +39,7 @@ function OrangeIronCtrl($scope, $http) {
                             data.lessons[i].vocabulary[j].uuid = uuid();
                         }
                     }
-                }
+                
             }
             $scope.server = data;
         });
