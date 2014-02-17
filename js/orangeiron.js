@@ -1,7 +1,6 @@
-var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate']);
+var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
-function OrangeIronCtrl($scope, $http) {
-
+.controller('OrangeIronCtrl', function($scope, $http) {
     $scope.languages = [{
         name: 'Englisch',
         locale: 'en'
@@ -13,7 +12,7 @@ function OrangeIronCtrl($scope, $http) {
         locale: 'es'
     }];
 
-    $scope.server = {};
+    $scope.server = null;
     $scope.lessonToEdit = null;
 
     $scope.newAlternativeTranslations = [];
@@ -40,6 +39,20 @@ function OrangeIronCtrl($scope, $http) {
                     }
                 }
             }
+
+            // Wrap the alternative translations into objects. This is a workaround for the current inability of AngularJS to bind to primitive types
+            for (var i = data.lessons.length - 1; i >= 0; i--) {
+                for (var j = data.lessons[i].vocabulary.length - 1; j >= 0; j--) {
+                    var tempArray = [];
+                    angular.forEach(data.lessons[i].vocabulary[j].alternativeTranslations, function(value, key) {
+                        this.push({
+                            text: value
+                        });
+                    }, tempArray);
+                    data.lessons[i].vocabulary[j].alternativeTranslations = tempArray;
+                };
+            };
+
             $scope.server = data;
         });
     };
@@ -71,7 +84,9 @@ function OrangeIronCtrl($scope, $http) {
     };
 
     $scope.addTranslation = function() {
-        $scope.newAlternativeTranslations.push($scope.newAlternativeTranslation);
+        $scope.newAlternativeTranslations.push({
+            text: $scope.newAlternativeTranslation
+        });
         $scope.newAlternativeTranslation = '';
     };
 
@@ -150,4 +165,25 @@ function OrangeIronCtrl($scope, $http) {
 
     // Development-Constants. REMOVE FOR PRODUCTION
     $scope.url = "https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json"
-}
+})
+
+.filter('stripAlternativeTranslations', ['$filter',
+    function($filter) {
+        return function(input) {
+            if (input !== null) {
+            	var data = angular.copy(input);
+                // flatten alternative translations arrays
+                for (var i = data.lessons.length - 1; i >= 0; i--) {
+                    for (var j = data.lessons[i].vocabulary.length - 1; j >= 0; j--) {
+                        var tempArray = [];
+                        angular.forEach(data.lessons[i].vocabulary[j].alternativeTranslations, function(value, key) {
+                            this.push(value.text);
+                        }, tempArray);
+                        data.lessons[i].vocabulary[j].alternativeTranslations = tempArray;
+                    };
+                };
+            }
+            return $filter('json')(data);
+        };
+    }
+]);

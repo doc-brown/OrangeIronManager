@@ -192,7 +192,7 @@
                                         <input class="form-control" type="text" ng-model="word.correctTranslation">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation">
+                                        <input class="form-control" ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation.text">
                                     </div>
                                 </div>
                             </div>
@@ -218,7 +218,7 @@
                 <hr>
                 <div ng-repeat="word in newWords track by $index">
                     {{word.originalWord}} -> {{word.correctTranslation}} (
-                    <span ng-repeat="translation in word.alternativeTranslations track by $index">{{translation}}</span>)
+                    <span ng-repeat="translation in word.alternativeTranslations track by $index" class="badge" style="margin-right: 5px">{{translation.text}}</span>)
                 </div>
                 <hr>
                 <div class="form-group">
@@ -229,7 +229,7 @@
                 </div>
                 <form role="form">
                     <div class="form-group">
-                        <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index">{{alternativeTranslation}}&nbsp;</span>
+                        <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index" class="badge" style="margin-right: 5px">{{alternativeTranslation.text}}</span>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
@@ -261,7 +261,7 @@
         <div ng-show="isDebugEnabled()">
             <hr>
             <h3>DEBUG</h3>
-            <textarea class="form-control" rows="100">{{server | json}}</textarea>
+            <textarea class="form-control" rows="100">{{server | stripAlternativeTranslations}}</textarea>
         </div>
     </div>
 
