@@ -25,19 +25,20 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
     $scope.getData = function(url) {
         $http.get(url).success(function(data) {
+            // old format without uuids? -> convert to new format
             if (data.uuid == null) {
-                // old format without uuids -> convert to new format
                 data.uuid = uuid();
-                for (i = 0; i < data.lessons.length; ++i) {
-                    if (data.lessons[i].uuid == null) {
-                        data.lessons[i].uuid = uuid();
-                    }
-                    for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
-                        if (data.lessons[i].vocabulary[j].uuid == null) {
-                            data.lessons[i].vocabulary[j].uuid = uuid();
-                        }
+            }
+            for (i = 0; i < data.lessons.length; ++i) {
+                if (data.lessons[i].uuid == null) {
+                    data.lessons[i].uuid = uuid();
+                }
+                for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
+                    if (data.lessons[i].vocabulary[j].uuid == null) {
+                        data.lessons[i].vocabulary[j].uuid = uuid();
                     }
                 }
+
             }
 
             // Wrap the alternative translations into objects. This is a workaround for the current inability of AngularJS to bind to primitive types
@@ -171,7 +172,7 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
     function($filter) {
         return function(input) {
             if (input !== null) {
-            	var data = angular.copy(input);
+                var data = angular.copy(input);
                 // flatten alternative translations arrays
                 for (var i = data.lessons.length - 1; i >= 0; i--) {
                     for (var j = data.lessons[i].vocabulary.length - 1; j >= 0; j--) {
