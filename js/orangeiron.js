@@ -62,6 +62,8 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
             };
 
             $scope.server = data;
+        }).error(function(data, status, headers, config) {
+            alert("Fehler beim Laden der Vokabeln.\nServerantwort: " + status);
         });
     };
 
