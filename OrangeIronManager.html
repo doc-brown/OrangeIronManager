@@ -217,7 +217,7 @@
                 </div>
                 <hr>
                 <div ng-repeat="word in newWords track by $index">
-                    {{word.originalWord}} -> {{word.correctTranslation}} (
+                    {{$index + 1}}. {{word.originalWord}} -> {{word.correctTranslation}} (
                     <span ng-repeat="translation in word.alternativeTranslations track by $index" class="badge" style="margin-right: 5px">{{translation.text}}</span>)
                 </div>
                 <hr>
