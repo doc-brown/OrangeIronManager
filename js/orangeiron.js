@@ -1,3 +1,10 @@
+/***
+ *      ____                         ____              __  ___
+ *     / __ \_______ ____  ___ ____ /  _/______  ___  /  |/  /__ ____  ___ ____ ____ ____
+ *    / /_/ / __/ _ `/ _ \/ _ `/ -_)/ // __/ _ \/ _ \/ /|_/ / _ `/ _ \/ _ `/ _ `/ -_) __/
+ *    \____/_/  \_,_/_//_/\_, /\__/___/_/  \___/_//_/_/  /_/\_,_/_//_/\_,_/\_, /\__/_/
+ *                       /___/                                            /___/
+ */
 var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
 .controller('OrangeIronCtrl', function($scope, $http) {
@@ -25,19 +32,20 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
     $scope.getData = function(url) {
         $http.get(url).success(function(data) {
+            // old format without uuids? -> convert to new format
             if (data.uuid == null) {
-                // old format without uuids -> convert to new format
                 data.uuid = uuid();
-                for (i = 0; i < data.lessons.length; ++i) {
-                    if (data.lessons[i].uuid == null) {
-                        data.lessons[i].uuid = uuid();
-                    }
-                    for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
-                        if (data.lessons[i].vocabulary[j].uuid == null) {
-                            data.lessons[i].vocabulary[j].uuid = uuid();
-                        }
+            }
+            for (i = 0; i < data.lessons.length; ++i) {
+                if (data.lessons[i].uuid == null) {
+                    data.lessons[i].uuid = uuid();
+                }
+                for (j = 0; j < data.lessons[i].vocabulary.length; ++j) {
+                    if (data.lessons[i].vocabulary[j].uuid == null) {
+                        data.lessons[i].vocabulary[j].uuid = uuid();
                     }
                 }
+
             }
 
             // Wrap the alternative translations into objects. This is a workaround for the current inability of AngularJS to bind to primitive types
@@ -54,6 +62,8 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
             };
 
             $scope.server = data;
+        }).error(function(data, status, headers, config) {
+            alert("Fehler beim Laden der Vokabeln.\nServerantwort: " + status);
         });
     };
 
@@ -103,6 +113,7 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
         $scope.newWord = {};
         $scope.newOriginalWord = '';
         $scope.newCorrectTranslation = '';
+        $('#newOriginalWord').focus();
     };
 
     $scope.editLesson = function(lesson) {
@@ -171,7 +182,7 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
     function($filter) {
         return function(input) {
             if (input !== null) {
-            	var data = angular.copy(input);
+                var data = angular.copy(input);
                 // flatten alternative translations arrays
                 for (var i = data.lessons.length - 1; i >= 0; i--) {
                     for (var j = data.lessons[i].vocabulary.length - 1; j >= 0; j--) {
