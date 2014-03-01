@@ -1,9 +1,9 @@
 /***
- *      ____                         ____              __  ___                           
+ *      ____                         ____              __  ___
  *     / __ \_______ ____  ___ ____ /  _/______  ___  /  |/  /__ ____  ___ ____ ____ ____
  *    / /_/ / __/ _ `/ _ \/ _ `/ -_)/ // __/ _ \/ _ \/ /|_/ / _ `/ _ \/ _ `/ _ `/ -_) __/
- *    \____/_/  \_,_/_//_/\_, /\__/___/_/  \___/_//_/_/  /_/\_,_/_//_/\_,_/\_, /\__/_/   
- *                       /___/                                            /___/          
+ *    \____/_/  \_,_/_//_/\_, /\__/___/_/  \___/_//_/_/  /_/\_,_/_//_/\_,_/\_, /\__/_/
+ *                       /___/                                            /___/
  */
 var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
@@ -62,6 +62,8 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
             };
 
             $scope.server = data;
+        }).error(function(data, status, headers, config) {
+            alert("Fehler beim Laden der Vokabeln.\nServerantwort: " + status);
         });
     };
 
@@ -111,6 +113,7 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
         $scope.newWord = {};
         $scope.newOriginalWord = '';
         $scope.newCorrectTranslation = '';
+        $('#newOriginalWord').focus();
     };
 
     $scope.editLesson = function(lesson) {
