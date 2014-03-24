@@ -19,6 +19,8 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
         locale: 'es'
     }];
 
+    $scope.errorMessage = '';
+
     $scope.server = null;
     $scope.lessonToEdit = null;
 
@@ -32,6 +34,9 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
     $scope.getData = function(url) {
         $http.get(url).success(function(data) {
+            // reset error message
+            $scope.errorMessage = '';
+
             // old format without uuids? -> convert to new format
             if (data.uuid == null) {
                 data.uuid = uuid();
@@ -63,7 +68,13 @@ var orangeIronManager = angular.module('orangeIronManager', ['ngAnimate'])
 
             $scope.server = data;
         }).error(function(data, status, headers, config) {
-            alert("Fehler beim Laden der Vokabeln.\nServerantwort: " + status);
+            switch (status) {
+                case 404:
+                    $scope.errorMessage = "Es wurden keine Vokabeln unter dem angegeben URL gefunden. Bitte überprüfe den URL und versuche es nochmal.";
+                    break;
+                default:
+                    $scope.errorMessage = "Es ist ein unbekannter Fehler beim Laden der Vokabeln aufgetreten! Der Server lieferte als Antwort: " + status + ".";
+            }
         });
     };
 

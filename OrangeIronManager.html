@@ -114,6 +114,16 @@
                 </span>
             </div>
         </form>
+
+        <!-- message area in case of errors when loading json -->
+        <div ng-hide="errorMessage === ''" class="panel panel-danger" style="margin-top: 10px">
+            <div class="panel-heading">
+                Fehler beim Laden der Vokabeln
+            </div>
+            <div class="panel-body">
+                {{errorMessage}}
+            </div>
+        </div>
         <hr class="clearfix">
         <form role="form">
             <h4>Neuen Server erstellen</h4>
