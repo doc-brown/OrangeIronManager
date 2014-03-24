@@ -47,13 +47,15 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li ng-show="data.server === null"><a href="#/createServer">Create Server</a>
+                    <li ng-show="data.server === null"><a href="#/createServer"><i class="glyphicon glyphicon-plus-sign"></i> Server</a>
                     </li>
-                    <li ng-hide="data.server === null"><a href="#/loadServer">View/Load Server</a>
+                    <li ng-hide="data.server === null"><a href="#/loadServer">Server laden/ansehen</a>
                     </li>
-                    <li ng-hide="data.server === null"><a href="#/lessonList">View Lessons</a>
+                    <li ng-hide="data.server === null"><a href="#/lessonList">Lektionen</a>
                     </li>
-                    <li ng-hide="data.server === null"><a href="#/createLesson">Add Lesson</a>
+                    <li ng-hide="data.server === null"><a href="#/createLesson"><i class="glyphicon glyphicon-plus-sign"></i> Lektion</a>
+                    </li>
+                    <li ng-hide="data.server === null"><a href="#/output">Output</a>
                     </li>
                     <!-- <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -114,21 +116,6 @@
 
         <div ui-view></div>
 
-
-        <!-- <form class="form-inline pull-right" role="form">
-            <div class="form-group">
-                <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
-            </div>
-        </form>
-        <p class="clearfix"></p>
-        <div ng-show="isDebugEnabled()">
-            <hr>
-            <h3>DEBUG</h3>
-            <textarea class="form-control" rows="100">{{server | stripAlternativeTranslations}}</textarea>
-        </div> -->
     </div>
 
     <!-- Modal -->

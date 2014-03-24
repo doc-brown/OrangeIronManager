@@ -32,12 +32,12 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
             controller: 'LessonList'
         })
         .state('editLesson', {
-            url: "/editLesson/:index",
+            url: "/editLesson/:uuid",
             templateUrl: "templates/editLesson.html",
             controller: 'EditLesson',
             resolve: {
                 lesson: function($stateParams, Server) {
-                    return Server.getLessonByIndex($stateParams.index);
+                    return Server.getLessonByUuid($stateParams.uuid);
                 }
             }
         })
@@ -45,7 +45,20 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
             url: "/createLesson",
             templateUrl: "templates/createLesson.html",
             controller: 'CreateLesson'
+        })
+        .state('output', {
+            url: "/output",
+            templateUrl: "templates/output.html",
+            controller: 'Output'
         });
+})
+
+.factory('UUID', function() {
+    return {
+        create: function() {
+            return UUIDjs.create().toString();
+        }
+    }
 })
 
 .factory('Server', function($http) {
@@ -122,6 +135,22 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
         return server.lessons[index];
     };
 
+    var _addLesson = function(newLesson) {
+        server.lessons.push(newLesson);
+        server.version++;
+    };
+
+    var _createServer = function(newServer) {
+        server = newServer;
+    };
+
+    var _updateLesson = function(oldLesson, newLesson) {
+        newLesson.version++;
+        var index = server.lessons.indexOf(oldLesson);
+        server.lessons[index] = newLesson;
+        server.version++;
+    };
+
     return {
         loadData: function(url) {
             return _loadData(url);
@@ -137,11 +166,37 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
         },
         getLessonByIndex: function(index) {
             return _getLessonByIndex(index);
+        },
+        addLesson: function(newLesson) {
+            _addLesson(newLesson);
+        },
+        createServer: function(newServer) {
+            _createServer(newServer);
+        },
+        updateLesson: function(oldLesson, newLesson) {
+            _updateLesson(oldLesson, newLesson);
         }
     };
 })
 
-.controller('NavBar', function($scope, Server) {
+.controller('OrangeIronCtrl', function($scope, $http, Server) {
+    $scope.data = {};
+    $scope.data.server = Server.getData();
+})
+
+.controller('NavBar', function($scope, Server) {})
+
+.controller('CreateServer', function($scope, Server, UUID) {
+    $scope.createServer = function() {
+        Server.createServer({
+            uuid: UUID.create(),
+            serverName: $scope.serverName,
+            serverDescription: $scope.serverDescription,
+            version: 1,
+            lessons: []
+        })
+        $scope.data.server = Server.getData();
+    };
 })
 
 .controller('LoadServer', function($scope, $http, Server) {
@@ -165,147 +220,89 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
     $scope.data.server = Server.getData();
 })
 
-.controller('EditLesson', function($scope, Server, lesson) {
-    console.log("EditLesson");
-    $scope.lessonToEdit = lesson;
-    console.log(lesson);
+.controller('EditLesson', function($scope, $state, Server, lesson) {
+    // create a deep copy of the lesson object, so we have to explicitly save the changes we made
+    $scope.lessonToEdit = angular.copy(lesson);
+
+    $scope.saveEditedLesson = function() {
+        Server.updateLesson(lesson, $scope.lessonToEdit);
+        $state.go('lessonList');
+    };
+
+    $scope.cancelEditedLesson = function() {
+        $state.go('lessonList');
+    };
 })
 
-.controller('OrangeIronCtrl', function($scope, $http, Server) {
-    $scope.data = {};
-    $scope.data.server = Server.getData();
-    console.log("OrangeIronCtrl " + $scope.data.server);
+.controller('CreateLesson', function($scope, Server, UUID) {
+    $scope.languages = [{
+        name: 'Englisch',
+        locale: 'en'
+    }, {
+        name: 'Französisch',
+        locale: 'fr'
+    }, {
+        name: 'Spanisch',
+        locale: 'es'
+    }];
 
-    // $scope.languages = [{
-    //     name: 'Englisch',
-    //     locale: 'en'
-    // }, {
-    //     name: 'Französisch',
-    //     locale: 'fr'
-    // }, {
-    //     name: 'Spanisch',
-    //     locale: 'es'
-    // }];
+    // Default
+    $scope.language = {
+        name: 'Englisch',
+        locale: 'en'
+    };
 
-    // $scope.lessonToEdit = null;
+    $scope.newAlternativeTranslations = [];
+    $scope.newVocabulary = [];
+    $scope.newWord = {};
+    $scope.newWords = [];
 
-    // $scope.newAlternativeTranslations = [];
-    // $scope.newVocabulary = [];
-    // $scope.newWord = {};
-    // $scope.newWords = [];
+    $scope.addLesson = function() {
+        Server.addLesson({
+            uuid: UUID.create(),
+            name: $scope.newLessonName,
+            language: $scope.language.locale,
+            version: 1,
+            vocabulary: $scope.newVocabulary
+        });
+        $scope.newLessonName = '';
+        $scope.newOriginalWord = '';
+        $scope.newCorrectTranslation = '';
+        $scope.newWords = [];
+    };
 
-    // var currIndex = -1;
-    // var isDebug = false;
+    $scope.addTranslation = function() {
+        $scope.newAlternativeTranslations.push({
+            text: $scope.newAlternativeTranslation
+        });
+        $scope.newAlternativeTranslation = '';
+    };
 
+    $scope.addWord = function() {
+        $scope.newWord = {
+            uuid: UUID.create(),
+            originalWord: $scope.newOriginalWord,
+            correctTranslation: $scope.newCorrectTranslation,
+            alternativeTranslations: $scope.newAlternativeTranslations
+        };
+        $scope.newVocabulary.push($scope.newWord);
+        $scope.newWords.push($scope.newWord);
+        $scope.newAlternativeTranslations = [];
+        $scope.newWord = {};
+        $scope.newOriginalWord = '';
+        $scope.newCorrectTranslation = '';
+        $('#newOriginalWord').focus();
+    };
+})
 
-
-    // $scope.createServer = function() {
-    //     $scope.server = {
-    //         uuid: uuid(),
-    //         serverName: $scope.serverName,
-    //         serverDescription: $scope.serverDescription,
-    //         version: 1,
-    //         lessons: []
-    //     };
-    //     resetFields();
-    // };
-
-    // $scope.addLesson = function() {
-    //     $scope.server.lessons.push({
-    //         uuid: uuid(),
-    //         name: $scope.newLessonName,
-    //         language: $scope.language.locale,
-    //         version: 1,
-    //         vocabulary: $scope.newVocabulary
-    //     });
-    //     $scope.server.version++;
-    //     $scope.newLessonName = '';
-    //     $scope.newOriginalWord = '';
-    //     $scope.newCorrectTranslation = '';
-    //     resetFields();
-    // };
-
-    // $scope.addTranslation = function() {
-    //     $scope.newAlternativeTranslations.push({
-    //         text: $scope.newAlternativeTranslation
-    //     });
-    //     $scope.newAlternativeTranslation = '';
-    // };
-
-    // $scope.addWord = function() {
-    //     $scope.newWord = {
-    //         uuid: uuid(),
-    //         originalWord: $scope.newOriginalWord,
-    //         correctTranslation: $scope.newCorrectTranslation,
-    //         alternativeTranslations: $scope.newAlternativeTranslations
-    //     };
-    //     $scope.newVocabulary.push($scope.newWord);
-    //     $scope.newWords.push($scope.newWord);
-    //     $scope.newAlternativeTranslations = [];
-    //     $scope.newWord = {};
-    //     $scope.newOriginalWord = '';
-    //     $scope.newCorrectTranslation = '';
-    //     $('#newOriginalWord').focus();
-    // };
-
-    // $scope.editLesson = function(lesson) {
-    //     var idx = $scope.server.lessons.indexOf(lesson);
-    //     $scope.lessonToEdit = angular.copy($scope.server.lessons[idx]);
-    //     currIndex = idx;
-    // };
-
-    // $scope.saveEditedLesson = function() {
-    //     $scope.lessonToEdit.version++;
-    //     $scope.server.lessons[currIndex] = $scope.lessonToEdit;
-    //     $scope.server.version++;
-    //     $scope.lessonToEdit = null;
-    // };
-
-    // $scope.cancelEditedLesson = function() {
-    //     $scope.lessonToEdit = null;
-    // };
-
-    // $scope.showEditSection = function() {
-    //     if ($scope.lessonToEdit) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // };
-
-    // $scope.toggleDebug = function() {
-    //     isDebug = !isDebug;
-    // }
-
-    // $scope.isDebugEnabled = function() {
-    //     return isDebug;
-    // }
-
-    // $scope.saveData = function() {
-    //     if (!showSave) {
-    //         alert("Your browser does not support any method of saving JavaScript generated data to files.");
-    //         return;
-    //     }
-    //     showSave(angular.toJson($scope.server), 'server.json', 'text/plain; charset=UTF-8');
-    // };
-
-    // uuid = function() {
-    //     return UUIDjs.create().toString();
-    // };
-
-    // resetFields = function() {
-    //     $scope.newAlternativeTranslations = [];
-    //     $scope.newVocabulary = [];
-    //     $scope.newWord = {};
-    //     $scope.newWords = [];
-    // }
-
-    // // Defaults
-    // $scope.language = {
-    //     name: 'Englisch',
-    //     locale: 'en'
-    // };
-
+.controller('Output', function($scope) {
+    $scope.saveData = function() {
+        if (!showSave) {
+            alert("Your browser does not support any method of saving JavaScript generated data to files.");
+            return;
+        }
+        showSave(angular.toJson($scope.data.server), 'server.json', 'text/plain; charset=UTF-8');
+    };
 })
 
 .filter('stripAlternativeTranslations', ['$filter',
