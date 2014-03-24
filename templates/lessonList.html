@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <form class="form-inline" role="form">
+            <div class="form-group">Lektionen</div>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="q.name" placeholder="Filtern nach Lektionsname">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="q.vocabulary" placeholder="Filtern nach Vokabel">
+            </div>
+        </form>
+    </div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li ng-repeat="lesson in data.server.lessons | filter:q:strict track by $index" class="list-group-item toggle">
+                <span class="badge">{{lesson.version}}</span>
+                <ul class="list-inline">
+                    <li>
+                        <a ng-href="#/editLesson/{{lesson.uuid}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
+                        <!-- <button title="Lektion bearbeiten" class="btn btn-success" ng-click="editLesson(lesson)">
+                        </button> -->
+                    </li>
+                    <li>{{lesson.name}}</li>
+                    <li>
+                        <span title="Anzahl der Vokabeln in der Lektion" class="label label-info">{{lesson.vocabulary.length}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

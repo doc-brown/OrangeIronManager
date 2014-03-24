@@ -1,0 +1,10 @@
+<form class="form-inline pull-right" role="form">
+    <div class="form-group">
+        <button class="btn btn-success" ng-click="saveData()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+    </div>
+</form>
+<div>
+    <h3>Output</h3>
+    <hr>
+    <textarea class="form-control" rows="50" style="margin-bottom: 50px">{{data.server | stripAlternativeTranslations}}</textarea>
+</div>

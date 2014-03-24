@@ -1,0 +1,36 @@
+<div class="form-group">
+    <form role="form" ng-submit="getData(url)">
+        <h4>Daten laden</h4>
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="url" placeholder="URL des Server-JSON (z.B. https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json)">
+            <span class="input-group-btn">
+                <input class="btn btn-primary" type="submit" value="Lade Daten">
+            </span>
+        </div>
+    </form>
+</div>
+
+<!-- message area in case of errors when loading json -->
+<div ng-if="data.errorMessage" class="panel panel-danger toggle">
+    <div class="panel-heading">
+        Fehler beim Laden der Vokabeln
+    </div>
+    <div class="panel-body">
+        {{data.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Serverinfo
+    </div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="badge">{{data.server.version}}</span>
+                {{data.server.serverName}}
+            </li>
+            <li class="list-group-item">{{data.server.serverDescription}}</li>
+        </ul>
+    </div>
+</div>
