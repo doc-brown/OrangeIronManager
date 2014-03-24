@@ -249,6 +249,10 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
         $('#newOriginalWord').focus();
     };
 
+    $scope.removeWord = function(word) {
+        $scope.lessonToEdit.vocabulary.splice($scope.lessonToEdit.vocabulary.indexOf(word), 1);
+    };
+
     $scope.saveEditedLesson = function() {
         Server.updateLesson(lesson, $scope.lessonToEdit);
         $state.go('lessonList');

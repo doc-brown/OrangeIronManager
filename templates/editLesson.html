@@ -7,6 +7,8 @@
             </div>
             <ul class="list-group">
                 <li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
+                    <button class="btn btn-danger" style="float: right" ng-click="removeWord(word)"><i class="glyphicon glyphicon-remove-sign"></i>
+                    </button>
                     <div class="form-inline" role="form">
                         <div class="form-group">
                             <div class="form-group">
