@@ -220,9 +220,34 @@ var orangeIronManager = angular.module('orangeIronManager', ['ui.router', 'ngAni
     $scope.data.server = Server.getData();
 })
 
-.controller('EditLesson', function($scope, $state, Server, lesson) {
+.controller('EditLesson', function($scope, $state, Server, UUID, lesson) {
     // create a deep copy of the lesson object, so we have to explicitly save the changes we made
     $scope.lessonToEdit = angular.copy(lesson);
+
+    $scope.addTranslation = function() {
+        $scope.newAlternativeTranslations.push({
+            text: $scope.newAlternativeTranslation
+        });
+        $scope.newAlternativeTranslation = '';
+    };
+
+    $scope.newAlternativeTranslations = [];
+    $scope.newWord = {};
+
+    $scope.addWord = function() {
+        $scope.newWord = {
+            uuid: UUID.create(),
+            originalWord: $scope.newOriginalWord,
+            correctTranslation: $scope.newCorrectTranslation,
+            alternativeTranslations: $scope.newAlternativeTranslations
+        };
+        $scope.lessonToEdit.vocabulary.push($scope.newWord);
+        $scope.newAlternativeTranslations = [];
+        $scope.newWord = {};
+        $scope.newOriginalWord = '';
+        $scope.newCorrectTranslation = '';
+        $('#newOriginalWord').focus();
+    };
 
     $scope.saveEditedLesson = function() {
         Server.updateLesson(lesson, $scope.lessonToEdit);
