@@ -1,0 +1,29 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">Lektion bearbeiten</div>
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="lessonToEdit.name">
+            </div>
+            <ul class="list-group">
+                <li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input class="form-control" type="text" ng-model="word.originalWord">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" ng-model="word.correctTranslation">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation.text">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
+            <button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
+        </form>
+    </div>
+</div>

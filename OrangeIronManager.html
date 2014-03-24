@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="css/orangeiron.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-animate.js"></script>
+    <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
     <!-- ngAnimation -->
     <link rel="stylesheet" type="text/css" href="css/ng-animation.css">
     <!-- /ngAnimation -->
@@ -30,7 +31,7 @@
 </head>
 
 <body ng-controller="OrangeIronCtrl">
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default" role="navigation" ng-controller="NavBar">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -45,12 +46,16 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!-- <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Link</a>
+                <ul class="nav navbar-nav">
+                    <li ng-show="data.server === null"><a href="#/createServer">Create Server</a>
                     </li>
-                    <li><a href="#">Link</a>
+                    <li ng-hide="data.server === null"><a href="#/loadServer">View/Load Server</a>
                     </li>
-                    <li class="dropdown">
+                    <li ng-hide="data.server === null"><a href="#/lessonList">View Lessons</a>
+                    </li>
+                    <li ng-hide="data.server === null"><a href="#/createLesson">Add Lesson</a>
+                    </li>
+                    <!-- <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Action</a>
@@ -66,8 +71,9 @@
                             <li><a href="#">One more separated link</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                 </ul>
+                <!--
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search">
@@ -105,161 +111,11 @@
                 <p class="lead">The fast edit tool for the Orange Iron Android app</p>
             </div>
         </div> -->
-        <form role="form" ng-submit="getData(url)">
-            <h4>Daten laden</h4>
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="url" placeholder="URL des Server-JSON (z.B. https://dl.dropboxusercontent.com/u/64100103/AndrVocJSON/albert.json)">
-                <span class="input-group-btn">
-                    <input class="btn btn-primary" type="submit" value="Lade Daten">
-                </span>
-            </div>
-        </form>
 
-        <!-- message area in case of errors when loading json -->
-        <div ng-hide="errorMessage === ''" class="panel panel-danger" style="margin-top: 10px">
-            <div class="panel-heading">
-                Fehler beim Laden der Vokabeln
-            </div>
-            <div class="panel-body">
-                {{errorMessage}}
-            </div>
-        </div>
-        <hr class="clearfix">
-        <form role="form">
-            <h4>Neuen Server erstellen</h4>
-            <div class="form-group">
-                <input type="text" class="form-control" ng-model="serverName" size="100" placeholder="Servername">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" ng-model="serverDescription" size="100" placeholder="Beschreibung">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" ng-click="createServer()">Neuen Server erstellen</button>
-            </div>
-        </form>
-        <hr>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                Serverinfo
-            </div>
-            <div class="panel-body">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <span class="badge">{{server.version}}</span>
-                        {{server.serverName}}
-                    </li>
-                    <li class="list-group-item">{{server.serverDescription}}</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <form class="form-inline" role="form">
-                    <div class="form-group">Lektionen</div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="q.name" placeholder="Filtern nach Lektionsname">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="q.vocabulary" placeholder="Filtern nach Vokabel">
-                    </div>
-                </form>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group">
-                    <li ng-repeat="lesson in server.lessons | filter:q:strict track by $index" class="list-group-item toggle">
-                        <span class="badge">{{lesson.version}}</span>
-                        <ul class="list-inline">
-                            <li>
-                                <button title="Lektion bearbeiten" class="btn btn-success" ng-click="editLesson(lesson)"><i class="glyphicon glyphicon-pencil"></i>
-                                </button>
-                            </li>
-                            <li>{{lesson.name}}</li>
-                            <li>
-                                <span title="Anzahl der Vokabeln in der Lektion" class="label label-info">{{lesson.vocabulary.length}}</span>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="panel panel-primary" ng-show="showEditSection()">
-            <div class="panel-heading">Lektion bearbeiten</div>
-            <div class="panel-body">
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="lessonToEdit.name">
-                    </div>
-                    <ul class="list-group">
-                        <li ng-repeat="word in lessonToEdit.vocabulary track by $index" class="list-group-item">
-                            <div class="form-inline" role="form">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" ng-model="word.originalWord">
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" ng-model="word.correctTranslation">
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" ng-repeat="translation in word.alternativeTranslations track by $index" ng-model="translation.text">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <button class="btn btn-success" ng-click="saveEditedLesson()"><i class="glyphicon glyphicon-floppy-disk"></i> Speichern</button>
-                    <button class="btn btn-danger" ng-click="cancelEditedLesson()"><i class="glyphicon glyphicon-remove"></i> Abbrechen</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">Neue Lektion hinzufügen</div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" ng-model="newLessonName" placeholder="Lektionsname">
-                </div>
-                <div class="form-group">Sprache:</div>
-                <div class="form-group">
-                    <select class="form-control" required ng-model="language.locale" ng-options="l.locale as l.name for l in languages">
-                    </select>
-                </div>
-                <hr>
-                <div ng-repeat="word in newWords track by $index">
-                    {{$index + 1}}. {{word.originalWord}} -> {{word.correctTranslation}} (
-                    <span ng-repeat="translation in word.alternativeTranslations track by $index" class="badge" style="margin-right: 5px">{{translation.text}}</span>)
-                </div>
-                <hr>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="newOriginalWord" ng-model="newOriginalWord" placeholder="originalWord">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" ng-model="newCorrectTranslation" placeholder="correctTranslation">
-                </div>
-                <form role="form">
-                    <div class="form-group">
-                        <span ng-repeat="alternativeTranslation in newAlternativeTranslations track by $index" class="badge" style="margin-right: 5px">{{alternativeTranslation.text}}</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="newAlternativeTranslation" placeholder="alternativeTranslation">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn" ng-click="addTranslation()"><i class="glyphicon glyphicon-plus-sign"></i> Übersetzung</button>
-                    </div>
-                </form>
-                <div class="form-group">
-                    <button class="btn" ng-click="addWord()"><i class="glyphicon glyphicon-plus-sign"></i> Wort</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" ng-click="addLesson()">Lektion hinzufügen</button>
-                </div>
-            </div>
-        </div>
-        <hr>
+        <div ui-view></div>
 
 
-        <form class="form-inline pull-right" role="form">
+        <!-- <form class="form-inline pull-right" role="form">
             <div class="form-group">
                 <button class="btn btn-warning" ng-click="toggleDebug()"><i class="glyphicon glyphicon-wrench"></i> Debug</button>
             </div>
@@ -272,7 +128,7 @@
             <hr>
             <h3>DEBUG</h3>
             <textarea class="form-control" rows="100">{{server | stripAlternativeTranslations}}</textarea>
-        </div>
+        </div> -->
     </div>
 
     <!-- Modal -->
