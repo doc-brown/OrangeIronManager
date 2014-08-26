@@ -12,7 +12,7 @@
     </div>
     <div class="panel-body">
         <ul class="list-group">
-            <li ng-repeat="lesson in data.server.lessons | filter:q:strict track by $index" class="list-group-item toggle">
+            <li ng-repeat="lesson in data.server.lessons | filter:q:strict | orderBy:'name':false track by $index" class="list-group-item toggle">
                 <span class="badge">{{lesson.version}}</span>
                 <ul class="list-inline">
                     <li>
