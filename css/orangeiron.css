@@ -32,3 +32,9 @@
   opacity:1;
   max-height:40px;
 }
+
+.badge {
+  font-family: arial;
+  font-weight:normal;
+  color: #000000;
+}
